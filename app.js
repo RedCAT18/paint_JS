@@ -1,6 +1,8 @@
 const canvas = document.getElementById('jsCanvas');
 const ctx = canvas.getContext('2d'); //set canvas context
 const colors = document.getElementsByClassName('jsColor');
+const range = document.getElementById('jsRange');
+const mode = document.getElementById('jsMode');
 
 canvas.width = 700;
 canvas.height = 700;
@@ -9,11 +11,29 @@ ctx.strokeStyle = '#2c2c2c';
 ctx.lineWidth = 2.5;
 
 let painting = false;
+let filling = false;
+
+//function to fill canvas with selected color
+function handleModeClick() {
+  if (filling === true) {
+    filling = false;
+    mode.innerText = 'Fill';
+  } else {
+    filling = true;
+    mode.innerText = 'Paint';
+  }
+}
 
 //function picking color when you choose color on the page
 function handleColorClick(event) {
   const color = event.target.style.backgroundColor;
   ctx.strokeStyle = color;
+}
+
+//function change line width when you change on the page
+function handleRangeChange(event) {
+  const width = event.target.value;
+  ctx.lineWidth = width;
 }
 
 function stopPainting() {
@@ -46,3 +66,11 @@ if (canvas) {
 Array.from(colors).forEach(color =>
   color.addEventListener('click', handleColorClick)
 );
+
+if (range) {
+  range.addEventListener('input', handleRangeChange);
+}
+
+if (mode) {
+  mode.addEventListener('click', handleModeClick);
+}
